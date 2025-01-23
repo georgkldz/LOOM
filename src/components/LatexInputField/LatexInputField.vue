@@ -58,8 +58,8 @@
 import { ref, computed, watch, onMounted, toRefs, unref } from "vue";
 import type { Ref } from "vue";
 import { QInput } from "quasar";
-import { LatexInputFieldComponent } from "src/components/LatexInputField/LatexInputField";
-import type { LatexInputFieldProps } from "src/components/LatexInputField/LatexInputField";
+import { LatexInputFieldComponent } from "@/components/LatexInputField/LatexInputField";
+import type { LatexInputFieldProps } from "@/components/LatexInputField/LatexInputField";
 import katex from "katex";
 import "katex/dist/katex.min.css";
 
@@ -76,13 +76,13 @@ const component = new LatexInputFieldComponent(
 
 // Aus dem Component-Objekt erhalten wir die Daten.
 // Hier liegt z. B. fieldValue und ggf. andere Konfigurationen.
-const componentData = component.getComponentData();
+const componentState = component.getComponentState();
+const fieldConfiguration = component.getComponentConfiguration();
 const dependencies = component.loadDependencies();
-const fieldConfiguration = unref(componentData).fieldConfiguration;
 
 // Lokales Ref, das wir per v-model an den QInput binden
 // und in das wir den Wert aus dem Store schreiben.
-const value: Ref<(typeof componentData.value)["fieldValue"]> = ref(undefined);
+const value: Ref<(typeof componentState.value)["fieldValue"]> = ref(undefined);
 
 const referenceValue = computed(() => {
   return dependencies.value.referenceValue;
@@ -121,7 +121,7 @@ const handleFocusOut = (event: FocusEvent) => {
 onMounted(() => {
   // Initialer Wert (genauso wie InputField.vue)
   // => erst referenceValue, falls gesetzt, sonst fieldValue
-  value.value = referenceValue.value ?? unref(componentData).fieldValue;
+  value.value = dependencies.value.referenceValue ?? unref(componentState).fieldValue;
   component.validate(<string | undefined | null>value.value);
 
 });

@@ -9,14 +9,6 @@ import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
 import type { JSONPathExpression } from "@/stores/Store";
 import { ref, unref } from "vue";
 import type { QInputProps } from "quasar";
-import type {
-  LatexInputFieldComponentState,
-  LatexInputFieldComponentType,
-  LatexInputFieldDependencies,
-  LatexInputFieldValidationConfiguration,
-  SerializedLatexInputFieldComponent,
-  SerializedLatexInputFieldDependencies
-} from "@/components/LatexInputField/LatexInputField";
 
 
 /**
@@ -46,11 +38,11 @@ export interface TextViewDependencies extends ComponentDependencies {
   referenceValue?: string | undefined | null;
 }
 
-export interface FieldConfiguration extends Omit<QInputProps, "modelValue" | "inputStyle"> {
+export interface TextViewFieldConfiguration extends Omit<QInputProps, "modelValue" | "inputStyle"> {
   placeholder?: string;
 }
 
-export declare interface TextSegment {
+export interface TextSegment {
   text: string;
   bold?: boolean;
   italic?: boolean;
@@ -61,23 +53,10 @@ export declare interface TextSegment {
  * The InputField-component may hold a static input field value in its componentData.
  */
 export declare interface TextViewComponentState extends ComponentState {
-  fieldConfiguration: FieldConfiguration;
+  fieldConfiguration: TextViewFieldConfiguration;
   textSegments?: Array<TextSegment>;
 }
 
-/**
- * Configuration for basic comparison operations with static values.
- */
-export declare interface ComparisonConfiguration {
-}
-
-/**
- * Validation strategy that compares static values to the value of the input field.
- */
-export declare interface TextViewValidationConfiguration
-  extends ValidationConfiguration {
-  comparisons: Array<ComparisonConfiguration>;
-}
 
 /**
  * The SerializedTextViewComponent interface is used to define the serialised properties of the TextView component.
@@ -86,7 +65,7 @@ export declare interface SerializedTextViewComponent
   extends SerializedBaseComponent<TextViewComponentType> {
     dependencies: SerializedTextViewDependencies;
     state: TextViewComponentState;
-    validationConfiguration: TextViewValidationConfiguration;
+
   }
 
 export interface TextViewSpecification extends ComponentTypeSpecification {
@@ -122,9 +101,6 @@ export class TextViewComponent extends BaseComponent<TextViewSpecification> {
 
     return { isValid, isCorrect };
   }
-
-
-
 
 }
 

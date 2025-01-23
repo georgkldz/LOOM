@@ -3,7 +3,7 @@ import type {
   SerialisedDependencies,
   ComponentDependencies,
   ComponentProps,
-  ComponentTypeSpecification, ComponentState, ValidationConfiguration
+  ComponentTypeSpecification, ComponentState, ValidationConfiguration, ComponentConfiguration
 } from "@/components/BaseComponent/BaseComponent";
 import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
 import type { JSONPathExpression } from "@/stores/Store";
@@ -39,7 +39,7 @@ export interface LatexInputFieldDependencies extends ComponentDependencies {
   referenceValue?: string | undefined | null;
 }
 
-export interface FieldConfiguration extends Omit<QInputProps, "modelValue" | "inputStyle"> {
+export interface LatexInputFieldConfiguration extends Omit<ComponentConfiguration & QInputProps, "modelValue" | "inputStyle"> {
   placeholder?: string;
   prepend?: string;
 }
@@ -48,7 +48,7 @@ export interface FieldConfiguration extends Omit<QInputProps, "modelValue" | "in
  * The InputField-component may hold a static input field value in its componentData.
  */
 export declare interface LatexInputFieldComponentState extends ComponentState {
-  fieldConfiguration: FieldConfiguration;
+  fieldConfiguration: LatexInputFieldConfiguration;
   fieldValue: string | undefined | null;
 }
 
@@ -71,9 +71,10 @@ export interface LatexInputFieldValidationConfiguration
  */
 export interface SerializedLatexInputFieldComponent
   extends SerializedBaseComponent<LatexInputFieldComponentType>{
-    dpendencies: SerializedLatexInputFieldDependencies;
+    dependencies: SerializedLatexInputFieldDependencies;
     state: LatexInputFieldComponentState;
-    validationConfiguration: LatexInputFieldValidationConfiguration
+    validationConfiguration: LatexInputFieldValidationConfiguration;
+    componentConfiguration: LatexInputFieldConfiguration;
   }
 
 export interface LatexInputFieldSpecification extends ComponentTypeSpecification {

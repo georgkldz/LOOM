@@ -12,17 +12,20 @@
 
 <script lang="ts" setup>
 import { onMounted, computed, watch, toRefs, unref } from "vue";
-import { TextSegment, TextViewComponent } from "components/TextView/TextView.ts";
-import type { TextViewProps } from "components/TextView/TextView";
+
+import { TextViewComponent } from "@/components/TextView/TextView";
+import type { TextSegment, TextViewProps } from "@/components/TextView/TextView";
 
 const props = defineProps<TextViewProps>();
 const { storeObject, componentID, componentPath } = toRefs(props);
 
 const component = new TextViewComponent(storeObject, unref(componentID), unref(componentPath));
-const componentData = component.getComponentData();
-//const fieldConfiguration = unref(componentData).fieldConfiguration;
+const componentState = component.getComponentState();
+// const fieldConfiguration = component.getComponentConfiguration();
 
-const textSegments = computed(() => unref(componentData).textSegments || []);
+// const dependencies = component.loadDependencies();
+
+const textSegments = computed(() => unref(componentState).textSegments || []);
 
 function computeClass(seg: TextSegment) {
   return {
