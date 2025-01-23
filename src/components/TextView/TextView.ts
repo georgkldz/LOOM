@@ -3,13 +3,20 @@ import type {
   SerialisedDependencies,
   ComponentDependencies,
   ComponentProps,
-  ComponentData,
-  JSONPathExpression,
-  ValidationConfiguration,
-} from "carpet-component-library";
-import { BaseComponent } from "carpet-component-library";
+  ComponentTypeSpecification, ComponentState, ValidationConfiguration
+} from "@/components/BaseComponent/BaseComponent";
+import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
+import type { JSONPathExpression } from "@/stores/Store";
 import { ref, unref } from "vue";
 import type { QInputProps } from "quasar";
+import type {
+  LatexInputFieldComponentState,
+  LatexInputFieldComponentType,
+  LatexInputFieldDependencies,
+  LatexInputFieldValidationConfiguration,
+  SerializedLatexInputFieldComponent,
+  SerializedLatexInputFieldDependencies
+} from "@/components/LatexInputField/LatexInputField";
 
 
 /**
@@ -53,7 +60,7 @@ export declare interface TextSegment {
 /**
  * The InputField-component may hold a static input field value in its componentData.
  */
-export declare interface TextViewComponentData extends ComponentData {
+export declare interface TextViewComponentState extends ComponentState {
   fieldConfiguration: FieldConfiguration;
   textSegments?: Array<TextSegment>;
 }
@@ -76,40 +83,44 @@ export declare interface TextViewValidationConfiguration
  * The SerializedTextViewComponent interface is used to define the serialised properties of the TextView component.
  */
 export declare interface SerializedTextViewComponent
-  extends SerializedBaseComponent<
-    TextViewComponentType,
-    SerializedTextViewDependencies,
-    TextViewComponentData,
-    TextViewValidationConfiguration
-  > {}
+  extends SerializedBaseComponent<TextViewComponentType> {
+    dependencies: SerializedTextViewDependencies;
+    state: TextViewComponentState;
+    validationConfiguration: TextViewValidationConfiguration;
+  }
+
+export interface TextViewSpecification extends ComponentTypeSpecification {
+  SerializedComponent: SerializedTextViewComponent;
+  Dependencies: TextViewDependencies;
+}
 
 /**
  * The InputFieldComponent class is a derived taskComponent, that allows users to enter textual or numeric input.
  */
-export class TextViewComponent extends BaseComponent<
-  SerializedTextViewComponent,
-  SerializedTextViewDependencies,
-  TextViewDependencies,
-  TextViewComponentData,
-  TextViewValidationConfiguration
-> {
+export class TextViewComponent extends BaseComponent<TextViewSpecification> {
   /**
    * validate: checks, if the loaded text (or the concatenated string) is undefined, null or empty.
    */
   public validate(textValue: string | undefined | null) {
     // Start: Angenommen, der Wert ist erst mal gültig
-    const isValid = ref(true);
+    let isValid = true;
+    const isCorrect = true;
 
     // Prüfen, ob der Wert nicht erlaubt ist (undefined, null oder leerer String)
     if (textValue === undefined || textValue === null || textValue.trim() === "") {
-      isValid.value = false;
+      isValid = false;
     }
 
-    // Über den Store (bzw. die storeObject-Referenz) setzen wir das Ergebnis
     unref(this.storeObject).setProperty({
-      path: `${this.serialisedBaseComponentPath}.isValid`,
-      value: isValid.value,
+      path: `${this.serialisedBaseComponentPath}.state.isValid`,
+      value: isValid
     });
+    unref(this.storeObject).setProperty({
+      path: `${this.serialisedBaseComponentPath}.state.isCorrect`,
+      value: isCorrect
+    });
+
+    return { isValid, isCorrect };
   }
 
 

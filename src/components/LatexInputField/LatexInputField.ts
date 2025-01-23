@@ -3,11 +3,10 @@ import type {
   SerialisedDependencies,
   ComponentDependencies,
   ComponentProps,
-  ComponentData,
-  JSONPathExpression,
-  ValidationConfiguration,
-} from "carpet-component-library";
-import { BaseComponent } from "carpet-component-library";
+  ComponentTypeSpecification, ComponentState, ValidationConfiguration
+} from "@/components/BaseComponent/BaseComponent";
+import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
+import type { JSONPathExpression } from "@/stores/Store";
 import { unref } from "vue";
 import katex from "katex";
 import type { QInputProps } from "quasar";
@@ -48,7 +47,7 @@ export interface FieldConfiguration extends Omit<QInputProps, "modelValue" | "in
 /**
  * The InputField-component may hold a static input field value in its componentData.
  */
-export declare interface LatexInputFieldComponentData extends ComponentData {
+export declare interface LatexInputFieldComponentState extends ComponentState {
   fieldConfiguration: FieldConfiguration;
   fieldValue: string | undefined | null;
 }
@@ -56,13 +55,13 @@ export declare interface LatexInputFieldComponentData extends ComponentData {
 /**
  * Configuration for basic comparison operations with static values.
  */
-export declare interface ComparisonConfiguration {
+export interface ComparisonConfiguration {
 }
 
 /**
  * Validation strategy that compares static values to the value of the input field.
  */
-export declare interface LatexInputFieldValidationConfiguration
+export interface LatexInputFieldValidationConfiguration
   extends ValidationConfiguration {
   comparisons: Array<ComparisonConfiguration>;
 }
@@ -70,24 +69,22 @@ export declare interface LatexInputFieldValidationConfiguration
 /**
  * The SerializedLatexInputFieldComponent interface is used to define the serialised properties of the LatexInputField component.
  */
-export declare interface SerializedLatexInputFieldComponent
-  extends SerializedBaseComponent<
-    LatexInputFieldComponentType,
-    SerializedLatexInputFieldDependencies,
-    LatexInputFieldComponentData,
-    LatexInputFieldValidationConfiguration
-  > {}
+export interface SerializedLatexInputFieldComponent
+  extends SerializedBaseComponent<LatexInputFieldComponentType>{
+    dpendencies: SerializedLatexInputFieldDependencies;
+    state: LatexInputFieldComponentState;
+    validationConfiguration: LatexInputFieldValidationConfiguration
+  }
+
+export interface LatexInputFieldSpecification extends ComponentTypeSpecification {
+  SerializedComponent: SerializedLatexInputFieldComponent;
+  Dependencies: LatexInputFieldDependencies;
+}
 
 /**
  * The InputFieldComponent class is a derived taskComponent, that allows users to enter textual or numeric input.
  */
-export class LatexInputFieldComponent extends BaseComponent<
-  SerializedLatexInputFieldComponent,
-  SerializedLatexInputFieldDependencies,
-  LatexInputFieldDependencies,
-  LatexInputFieldComponentData,
-  LatexInputFieldValidationConfiguration
-> {
+export class LatexInputFieldComponent extends BaseComponent<LatexInputFieldSpecification> {
   /**
    * A InputFieldComponent is valid, if it matches the value in the InputFieldValidationConfiguration.
    * @returns
@@ -99,11 +96,16 @@ export class LatexInputFieldComponent extends BaseComponent<
   public validate(userValue: string | undefined | null) {
     const error = this.getSyntaxError(userValue);
     const isValid = error === null || userValue?.toString() == "";
-
+    const isCorrect =  false;
     unref(this.storeObject).setProperty({
-      path: `${this.serialisedBaseComponentPath}.isValid`,
-      value: isValid,
+      path: `${this.serialisedBaseComponentPath}.state.isValid`,
+      value: isValid
     });
+    unref(this.storeObject).setProperty({
+      path: `${this.serialisedBaseComponentPath}.state.isCorrect`,
+      value: isCorrect
+    });
+    return { isValid, isCorrect };
   }
 
 
