@@ -15,7 +15,6 @@ import type { QInputProps } from "quasar";
 /**
  * The LatexInputFieldProps interface is used to define the properties, that are passed from the parent component to the LatexInputField component.
  */
-export declare interface LatexInputFieldProps extends ComponentProps {}
 export interface LatexInputFieldProps extends ComponentProps {
   modelValue?: string; // Der LaTeX-Inhalt wird optional übergeben
 }

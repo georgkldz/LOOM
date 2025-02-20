@@ -14,7 +14,6 @@ import type { QInputProps } from "quasar";
 /**
  * The TextViewProps interface is used to define the properties, that are passed from the parent component to the TextView component.
  */
-export declare interface TextViewProps extends ComponentProps {}
 export interface TextViewProps extends ComponentProps {
   modelValue?: string;
 }
