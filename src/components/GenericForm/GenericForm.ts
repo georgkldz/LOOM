@@ -17,6 +17,9 @@ import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
 import type { JSONPathExpression } from "@/stores/Store";
 import type { SerializedInputFieldComponent } from "../InputField/InputField";
 import type { SerializedButtonComponent } from "../GenericButton/GenericButton";
+import type {SerializedLatexInputFieldComponent} from "@/components/LatexInputField/LatexInputField";
+import type {SerializedTextViewComponent} from "@/components/TextView/TextView";
+
 import { unref } from "vue";
 
 /**
@@ -90,8 +93,10 @@ export interface FormNestedComponents extends NestedComponents {
    * Components used as formComponents MUST expose their user input value as fieldValue in their componentState. See InputField for an example.
    */
   formComponents: {
-    // TODO: Include DropdownComponent, Sliders, Checkboxes, etc.
-    [key: string]: SerializedInputFieldComponent;
+    [key: string]:
+      | SerializedInputFieldComponent
+      | SerializedLatexInputFieldComponent
+      | SerializedTextViewComponent;
   };
   actionComponents: {
     submit: SerializedButtonComponent;

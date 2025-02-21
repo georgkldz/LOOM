@@ -54,6 +54,7 @@ export interface TextSegment {
 export declare interface TextViewComponentState extends ComponentState {
   fieldConfiguration: TextViewFieldConfiguration;
   textSegments?: Array<TextSegment>;
+  fieldValue: string | undefined | null;
 }
 
 
