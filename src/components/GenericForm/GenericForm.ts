@@ -167,6 +167,8 @@ export class FormComponent extends BaseComponent<FormSpecification> {
       formFieldsAreValidAndDependenciesAreCorrect: areFormComponentsValid && areDependenciesCorrect
     };
 
+    console.log("validationResult", validationResult);
+
     Object.entries(validationResult).forEach(([key, value]) => {
       unref(this.storeObject).setProperty({
         path: `${this.serialisedBaseComponentPath}.state.${key}`,
