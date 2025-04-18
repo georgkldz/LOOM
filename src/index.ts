@@ -1,4 +1,10 @@
 /**
+ * Export LOOM
+ */
+import LOOM from "@/LOOM/LOOM.vue";
+export { LOOM };
+
+/**
  * Export Base Component
  */
 import { BaseComponent } from "./components/BaseComponent/BaseComponent";
@@ -33,6 +39,10 @@ export type SerializedCARPETComponents =
   | SerializedCodeEditorComponent
   | SerializedLatexInputFieldComponent
   | SerializedTextViewComponent;
+
+export interface SerialisedComponents {
+  [id: number]: SerializedCARPETComponents;
+}
 
 /**
  * Export all types
