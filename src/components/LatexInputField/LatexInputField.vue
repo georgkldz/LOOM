@@ -139,7 +139,7 @@ watch(
 const onUserInput = (newValue: string | number | null) => {
   // 1) Wert in den Store schreiben
   unref(storeObject).setProperty({
-    path: `${component.getComponentPath()}.component.fieldValue`,
+    path: `${component.getComponentPath()}.state.fieldValue`,
     value: newValue
   });
 
