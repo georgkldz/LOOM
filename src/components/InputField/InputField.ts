@@ -58,6 +58,7 @@ export interface FieldConfiguration
  */
 export interface InputFieldComponentState extends ComponentState {
   fieldValue: QInputProps["modelValue"];
+  fieldValueByUser?: Record<string, QInputProps["modelValue"]>;
 }
 
 export type BasicComparisonOperators = "=" | "==" | "!=" | ">" | "<" | ">=" | "<=";

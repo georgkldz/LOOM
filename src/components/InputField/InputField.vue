@@ -47,12 +47,28 @@ watch(
     }
   }
 );
+// NEUER Watcher: reagiert auf Remote-Änderungen
+const myUid = unref(storeObject).getProperty("$.userId") as number
+watch(
+  () => componentState.value.fieldValueByUser,
+  () => {
+    const ownVal =
+      componentState.value.fieldValueByUser?.[String(myUid)] ?? ''
+    component.validate(ownVal as string | number | null)
+  },
+  { deep: true }
+)
 
 const onUserInput = (newValue: string | number | null) => {
   unref(storeObject).setProperty({
     path: `${component.getComponentPath()}.state.fieldValue`,
     value: newValue
   });
+  console.log("UserId ist ", myUid);
+  unref(storeObject).setProperty({
+    path : `${component.getComponentPath()}.state.fieldValueByUser.${myUid}`,
+    value: newValue
+  })
   component.validate(<string | number | undefined | null>value.value);
 };
 </script>

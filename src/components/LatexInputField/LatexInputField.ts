@@ -49,6 +49,7 @@ export interface LatexInputFieldConfiguration extends Omit<ComponentConfiguratio
 export declare interface LatexInputFieldComponentState extends ComponentState {
   fieldConfiguration: LatexInputFieldConfiguration;
   fieldValue: string | undefined | null;
+  fieldValueByUser?: Record<string, QInputProps["modelValue"]>;
 }
 
 /**
