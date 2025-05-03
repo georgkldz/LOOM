@@ -10,24 +10,30 @@
   />
 
   <!-- Einzelergebnisse nur bei Feldern mit Map -->
-  <q-expansion-item
+  <QExpansionItem
     v-if="hasMap(comp)"
+    expand-icon="expand_more"
+    collapse-icon="expand_less"
     dense
-    label="Einzelergebnisse"
+    header-class="bg-primary text-white"
+    :label="`Einzelergebnisse (${Object.keys(comp.state.fieldValueByUser).length})`"
   >
     <component
       v-for="([uid,val]) in Object.entries(comp.state.fieldValueByUser)"
-      :is="comp.type"
       :key="`${id}-u${uid}`"
+      :is="comp.type"
       :fieldValue="val"
       :readonly="true"
       :style="{ borderLeft:`4px solid ${userColor(uid)}` }"
     />
-  </q-expansion-item>
+  </QExpansionItem>
+
 </template>
+
 
 <script setup lang="ts">
 import type { SerializedBaseComponent } from '@/components/BaseComponent/BaseComponent'
+import { QExpansionItem } from 'quasar';
 
 /* ---------- Props ------------------------------------ */
 defineProps<{

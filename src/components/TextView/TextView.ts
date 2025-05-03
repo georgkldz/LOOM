@@ -3,7 +3,7 @@ import type {
   SerialisedDependencies,
   ComponentDependencies,
   ComponentProps,
-  ComponentTypeSpecification, ComponentState, ValidationConfiguration
+  ComponentTypeSpecification, ComponentState, ComponentConfiguration
 } from "@/components/BaseComponent/BaseComponent";
 import { BaseComponent } from "@/components/BaseComponent/BaseComponent";
 import type { JSONPathExpression } from "@/stores/Store";
@@ -39,6 +39,10 @@ export interface TextViewDependencies extends ComponentDependencies {
 
 export interface TextViewFieldConfiguration extends Omit<QInputProps, "modelValue" | "inputStyle"> {
   placeholder?: string;
+}
+
+export interface TextViewConfiguration
+  extends ComponentConfiguration {
 }
 
 export interface TextSegment {

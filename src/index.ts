@@ -20,9 +20,10 @@ import GenericForm from "./components/GenericForm/GenericForm.vue";
 import CodeEditor from "./components/CodeEditor/CodeEditor.vue";
 import LatexInputField from "./components/LatexInputField/LatexInputField.vue";
 import TextView from "./components/TextView/TextView.vue";
-import CollabField from "@/components/CollaborativeForm/CollabField.vue";
+import CollaborativeForm from "./components/CollaborativeForm/CollaborativeForm.vue";
+import SimpleForm from "./components/SimpleForm/SimpleForm.vue";
 
-export const CARPETComponents = { DOTGraph, InputField, GenericButton, GenericForm, CodeEditor, LatexInputField, TextView, CollabField };
+export const CARPETComponents = { DOTGraph, InputField, GenericButton, GenericForm, CodeEditor, LatexInputField, TextView, CollaborativeForm, SimpleForm };
 
 import type { SerializedDOTGraphComponent } from "./components/DOTGraph/DOTGraph";
 import type { SerializedInputFieldComponent } from "./components/InputField/InputField";
@@ -31,7 +32,9 @@ import type { SerializedFormComponent } from "./components/GenericForm/GenericFo
 import type { SerializedCodeEditorComponent } from "./components/CodeEditor/CodeEditor";
 import type {SerializedLatexInputFieldComponent} from "./components/LatexInputField/LatexInputField";
 import type {SerializedTextViewComponent} from "./components/TextView/TextView";
-import type {SerializedCollabFormComponent} from "@/components/CollaborativeForm/CollaborativeForm";
+import type {SerializedCollabFormComponent} from "./components/CollaborativeForm/CollaborativeForm";
+import type {SerializedSimpleFormComponent} from "@/components/SimpleForm/SimpleForm";
+
 
 export type SerializedCARPETComponents =
   | SerializedDOTGraphComponent
@@ -41,7 +44,8 @@ export type SerializedCARPETComponents =
   | SerializedCodeEditorComponent
   | SerializedLatexInputFieldComponent
   | SerializedTextViewComponent
-  | SerializedCollabFormComponent;
+  | SerializedCollabFormComponent
+  | SerializedSimpleFormComponent;
 
 export interface SerialisedComponents {
   [id: number]: SerializedCARPETComponents;
@@ -60,3 +64,4 @@ export * from "./components/CodeEditor/CodeEditor";
 export * from "./components/LatexInputField/LatexInputField";
 export * from "./components/TextView/TextView";
 export * from "./components/CollaborativeForm/CollaborativeForm.vue"
+export * from "./components/SimpleForm/SimpleForm";

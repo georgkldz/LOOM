@@ -39,7 +39,7 @@ export type CollaborativeFormComponentType = "CollaborativeForm";
 export type SerializedCollabDependencies =
   SerialisedDependencies & {
   userId?: JSONPathExpression;
-  roleId?: JSONPathExpression;
+  collabRoleId?: JSONPathExpression;
 };
 
 
@@ -49,7 +49,7 @@ export type SerializedCollabDependencies =
 export type CollabFormDependencies =
   ComponentDependencies & {
   userId?: number;
-  roleId?: number;
+  collabRoleId?: number;
 };
 
 /**
@@ -59,6 +59,7 @@ export interface CollabFormPayload extends ActionPayload {
   collabFields: Record<string, any>      // Werte der koll. Felder
   external?: Record<string, any>
   formFields: { [key: string]: any };
+  extraRightFields: { [key: string]: any };
   externalValues: { [key: string]: any };
 }
 
@@ -102,6 +103,12 @@ export interface CollabNestedComponents extends NestedComponents {
    * Components used as formComponents MUST expose their user input value as fieldValue in their componentState. See InputField for an example.
    */
   formComponents: {
+    [key: string]:
+      | SerializedInputFieldComponent
+      | SerializedLatexInputFieldComponent
+      | SerializedTextViewComponent;
+  };
+  extraRightComponents: {
     [key: string]:
       | SerializedInputFieldComponent
       | SerializedLatexInputFieldComponent
@@ -163,7 +170,7 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
    * @returns
    */
   public validate() {
-    const role = this.getDependencies().value.roleId
+    const role = this.getDependencies().value.collabRoleId
     const userId = this.getDependencies().value.userId
     const locksOk = this.checkLocks(role, userId)
     unref(this.storeObject).setProperty({
@@ -177,11 +184,14 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
     const { isValid: areFormComponentsValid, isCorrect: areFormComponentsCorrect } =
       this.validateValidityAndCorrectness(Object.values(this.getNestedComponents().formComponents));
 
+    const { isValid: areExtraRightComponentsValid, isCorrect: areExtraRightComponentsCorrect } =
+      this.validateValidityAndCorrectness(Object.values(this.getNestedComponents().extraRightComponents));
+
     const validationResult: ValidationResult = {
-      isValid: areDependenciesValid && areFormComponentsValid,
-      isCorrect: areDependenciesCorrect && areFormComponentsCorrect,
-      dependenciesAreValidAndFormFieldsAreCorrect: areDependenciesValid && areFormComponentsCorrect,
-      formFieldsAreValidAndDependenciesAreCorrect: areFormComponentsValid && areDependenciesCorrect
+      isValid: areDependenciesValid && areFormComponentsValid && areExtraRightComponentsValid,
+      isCorrect: areDependenciesCorrect && areFormComponentsCorrect && areExtraRightComponentsCorrect,
+      dependenciesAreValidAndFormFieldsAreCorrect: areDependenciesValid && areFormComponentsCorrect && areExtraRightComponentsCorrect,
+      formFieldsAreValidAndDependenciesAreCorrect: areFormComponentsValid && areExtraRightComponentsValid && areDependenciesCorrect
     };
 
     console.log("validationResult", validationResult);
@@ -236,6 +246,16 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
       )
     )
 
+    const extraRightFields = Object.entries(this.getNestedComponents().extraRightComponents).reduce(
+      (extraRightFieldValues, [key, component]) => {
+        const value = component.state.fieldValue;
+        extraRightFieldValues[key] = value;
+
+        return extraRightFieldValues;
+      },
+      {} as { [key: string]: any }
+    );
+
     const formFields = Object.entries(this.getNestedComponents().formComponents).reduce(
       (formFieldValues, [key, component]) => {
         const value = component.state.fieldValue;
@@ -246,6 +266,6 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
       {} as { [key: string]: any }
     );
 
-    return { formFields, collabFields, externalValues };
+    return { formFields, collabFields, extraRightFields, externalValues };
   }
 }

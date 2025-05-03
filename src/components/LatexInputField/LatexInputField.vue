@@ -46,9 +46,7 @@
     <template #default>
       <span v-html="renderedLatexLabel" class="latex-preview"></span>
     </template>
-    <template #append>
-      <q-icon name="edit" />
-    </template>
+
     </q-input>
 
   </div>
