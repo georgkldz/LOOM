@@ -64,7 +64,7 @@
 
 <script lang="ts" setup>
 
-import { toRefs, unref, watch, ref, computed } from "vue";
+import { toRefs, unref, watch, ref, onMounted, computed, nextTick } from "vue";
 import { CollaborativeFormComponent } from "@/components/CollaborativeForm/CollaborativeForm";
 import type { CollaborativeFormProps, CollabFormEmits, ValidationResult } from "@/components/CollaborativeForm/CollaborativeForm";
 
@@ -109,10 +109,23 @@ watch(
   },
   { deep: true, immediate: true }
 );
+
+onMounted(async () => {
+  await nextTick();
+  unref(storeObject).extractFieldValues();
+});
+
 </script>
 
 <style>
-.form__actions-submit {
-  margin-top: 16px;
+.form__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.form__elements-canvas{
+  min-height: 140px;
+  resize: vertical;
 }
 </style>
