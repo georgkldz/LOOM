@@ -15,7 +15,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, watch, toRefs, unref, ref } from "vue";
+import { onMounted, watch, toRefs, unref, computed, ref } from "vue";
 import type { Ref } from "vue";
 import { InputFieldComponent } from "@/components/InputField/InputField";
 import type { InputFieldProps } from "@/components/InputField/InputField";
@@ -31,44 +31,44 @@ const fieldConfiguration = component.getComponentConfiguration();
 
 const dependencies = component.loadDependencies();
 
-const value: Ref<(typeof componentState.value)["fieldValue"]> = ref(undefined);
-
-onMounted(() => {
-  value.value = dependencies.value.referenceValue ?? unref(componentState).fieldValue;
-  component.validate(<string | number | undefined | null>value.value);
-});
-
+const value = computed({
+  get: () =>
+       dependencies.value.referenceValue
+         ?? componentState.value.fieldValue,
+       set: (newValue: string | number | null) => {
+       unref(storeObject).setProperty({
+           path : `${component.getComponentPath()}.state.fieldValue`,
+           value: newValue
+       });
+       component.validate(newValue as any);
+     }
+ });
 watch(
   () => dependencies.value.referenceValue,
-  (newValue, oldValue) => {
-    if (newValue !== oldValue) {
-      value.value = newValue;
-      component.validate(<string | number | undefined | null>value.value);
+  (newVal) => {
+    if (newVal !== undefined) {
+
+      if (componentState.value.fieldValue === "" ) {
+        unref(storeObject).setProperty({
+          path : `${component.getComponentPath()}.state.fieldValue`,
+          value: newVal
+        });
+      }
+      component.validate(newVal as any);
     }
   }
 );
-// NEUER Watcher: reagiert auf Remote-Änderungen
-const myUid = unref(storeObject).getProperty("$.userId") as number
-watch(
-  () => componentState.value.fieldValueByUser,
-  () => {
-    const ownVal =
-      componentState.value.fieldValueByUser?.[String(myUid)] ?? ''
-    component.validate(ownVal as string | number | null)
-  },
-  { deep: true }
-)
+
+     onMounted(() => component.validate(value.value as any));
+
+
 
 const onUserInput = (newValue: string | number | null) => {
   unref(storeObject).setProperty({
     path: `${component.getComponentPath()}.state.fieldValue`,
     value: newValue
   });
-  console.log("UserId ist ", myUid);
-  unref(storeObject).setProperty({
-    path : `${component.getComponentPath()}.state.fieldValueByUser.${myUid}`,
-    value: newValue
-  })
+
   component.validate(<string | number | undefined | null>value.value);
 };
 </script>
