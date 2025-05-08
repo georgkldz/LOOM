@@ -16,6 +16,7 @@ import { unref } from "vue";
 import type { QInputProps } from "quasar";
 import type { IconList } from "@/Util/IconList";
 
+
 /**
  * The InputFieldProps interface is used to define the properties, that are passed from the parent component to the InputField component.
  */
@@ -51,6 +52,7 @@ export interface FieldConfiguration
   extends Omit<ComponentConfiguration & QInputProps, "modelValue" | "inputStyle"> {
   icon?: IconList;
   placeholder?: string;
+  editAllowedForRole?: number;
 }
 
 /**
@@ -297,4 +299,8 @@ export class InputFieldComponent extends BaseComponent<InputFieldSpecification> 
 
     return unref(this.storeObject).store?.fetchFromAPI(validationConfiguration.url);
   }
+
 }
+
+
+

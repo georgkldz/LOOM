@@ -17,11 +17,14 @@ import type { QInputProps } from "quasar";
  */
 export interface LatexInputFieldProps extends ComponentProps {
   modelValue?: string; // Der LaTeX-Inhalt wird optional übergeben
+  readonly?: boolean;
 }
 /**
  * The type of the LatexInputField component.
  */
 export declare type LatexInputFieldComponentType = "LatexInputField";
+
+
 
 /**
  * The InputField-component may receive a path to a reference value for the initialization of the input field value.
@@ -41,6 +44,8 @@ export interface LatexInputFieldDependencies extends ComponentDependencies {
 export interface LatexInputFieldConfiguration extends Omit<ComponentConfiguration & QInputProps, "modelValue" | "inputStyle"> {
   placeholder?: string;
   prepend?: string;
+  editAllowedForRole?: number;
+  readonly?: boolean;
 }
 
 /**
@@ -75,7 +80,7 @@ export interface SerializedLatexInputFieldComponent
     state: LatexInputFieldComponentState;
     validationConfiguration: LatexInputFieldValidationConfiguration;
     componentConfiguration: LatexInputFieldConfiguration;
-  }
+}
 
 export interface LatexInputFieldSpecification extends ComponentTypeSpecification {
   SerializedComponent: SerializedLatexInputFieldComponent;
@@ -126,6 +131,7 @@ export class LatexInputFieldComponent extends BaseComponent<LatexInputFieldSpeci
       return error instanceof Error ? error.message : "Unbekannter Fehler.";
     }
   }
+
 
 }
 

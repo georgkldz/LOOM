@@ -2,8 +2,9 @@
   <div class="latex-editor">
     <!-- Eingabebereich mit Quasar QInput -->
     <q-input
-      v-if="isEditing"
+      v-if="canEdit"
       v-model="value"
+      :readonly="readonly"
       type="text"
       dense
       outlined
@@ -53,7 +54,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, computed, watch, onMounted, toRefs, unref } from "vue";
+import { ref, computed, watch, onMounted, toRefs, toRef, unref } from "vue";
 import type { Ref } from "vue";
 import { QInput } from "quasar";
 import { LatexInputFieldComponent } from "@/components/LatexInputField/LatexInputField";
@@ -62,8 +63,9 @@ import katex from "katex";
 import "katex/dist/katex.min.css";
 
 // Props aus der CARPET Component Library definieren
-const props = defineProps<LatexInputFieldProps>();
+const props = defineProps<LatexInputFieldProps& { readonly?: boolean }>();
 const { storeObject, componentID, componentPath } = toRefs(props);
+const readonly = toRef(props, 'readonly');
 
 // LatexInputFieldComponent-Instanz erstellen
 const component = new LatexInputFieldComponent(
@@ -93,6 +95,7 @@ const value = computed({
 
 // Reaktive Variablen
 const isEditing = ref(false); // Steuert den Bearbeitungsmodus
+const canEdit   = computed(() => !props.readonly && isEditing.value);
 
 // Computed für Syntaxfehler (Verwendung von getSyntaxError aus TextView.ts)
 const syntaxError = computed(() => component.getSyntaxError(value.value));

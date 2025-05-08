@@ -158,6 +158,7 @@ export interface ComponentConfiguration {
    * Some components may offer a customizable inner component layout. The layout is required to be built with CSS Grid.
    */
   innerComponentLayout?: CustomInnerComponentLayout;
+  editAllowedForRole?: number;
 }
 
 /**
@@ -239,6 +240,7 @@ export interface SerializedBaseComponent<T extends BaseComponentType = BaseCompo
    * Optional: Actions that can be emitted by the component.
    */
   actions?: ComponentActions;
+  ui?: UIProperties;
 }
 
 /**
@@ -250,6 +252,18 @@ export interface ComponentTypeSpecification {
   MethodImplementations: ExposedMethods;
   Emits: ComponentEmits;
 }
+/** Layout-Metadaten für den generischen Renderer */
+export interface UIProperties {
+  /** Position in der linearen Reihenfolge – kleiner = weiter oben */
+  order: number;
+  /** true ⇒ Feld gehört in ein Accordion */
+  accordion: boolean;
+  /** gemeinsame ID aller Felder derselben Accordion-Gruppe */
+  accordionName?: string;
+  /** sichtbare Beschriftung des Accordion-Headers */
+  accordionLabel?: string;
+}
+
 
 /**
  * The BaseComponent class is the base class for all derived CARPET components.
@@ -427,6 +441,10 @@ export abstract class BaseComponent<
   public getActionConfig = (event: string) => {
     return this.serializedBaseComponent.value.actions?.[event] as ComponentAction;
   };
+
+  public getUI(): UIProperties | undefined {
+    return unref(this.serializedBaseComponent).ui;
+  }
 
   /**
    * The actionHandler function is used to emit an action event.
