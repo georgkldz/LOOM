@@ -39,7 +39,7 @@ export type CollaborativeFormComponentType = "CollaborativeForm";
 export type SerializedCollabDependencies =
   SerialisedDependencies & {
   userId?: JSONPathExpression;
-  collabRoleId?: JSONPathExpression;
+  myCollabRoleId?: JSONPathExpression;
 };
 
 
@@ -49,7 +49,7 @@ export type SerializedCollabDependencies =
 export type CollabFormDependencies =
   ComponentDependencies & {
   userId?: number;
-  collabRoleId?: number;
+  myCollabRoleId?: number;
 };
 
 /**

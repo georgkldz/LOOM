@@ -64,7 +64,7 @@
           :storeObject="storeObject"
           :componentID="formFieldId"
           :componentPath="`${componentPath}.nestedComponents.extraRightComponents.${formFieldId}`"
-          :readonly="!mayWrite(collabRoleId, formFieldComponent.componentConfiguration?.editAllowedForRole)"
+          :readonly="!mayWrite(myCollabRoleId, formFieldComponent.componentConfiguration?.editAllowedForRole)"
         />
       </div>
       <!-- Submit-Button rechte Spalte? -->
@@ -139,7 +139,7 @@ const layoutBlocks = computed(() => {
 });
 
 // Wichtig: Zugriff auf die Rolle des Benutzers für Berechtigungsprüfung
-const collabRoleId = unref(storeObject).getProperty(`$.collabRoleId`);
+const myCollabRoleId = unref(storeObject).getProperty(`$.myCollabRoleId`);
 
 const validationResult = ref(component.validate());
 const formIsSubmitableWhen: keyof ValidationResult = unref(storeObject).getProperty(
@@ -149,7 +149,7 @@ const formIsSubmitableWhen: keyof ValidationResult = unref(storeObject).getPrope
 function mayWrite(roleId: number | undefined,
                   allowedRoleId?: number): boolean {
   if (allowedRoleId === undefined) return true;
-  console.debug("Loom, CollabRoleId ist ", collabRoleId);
+  console.debug("Loom, myCollabRoleId ist ", myCollabRoleId);
   return roleId === allowedRoleId;
 }
 
