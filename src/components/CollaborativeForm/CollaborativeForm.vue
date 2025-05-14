@@ -14,9 +14,7 @@
           :componentPath="`${componentPath}.nestedComponents.formComponents.${block.id}`"
           readonly
           :class="[
-            'form__elements',
-            `form__elements-${block.id}`
-          ]"
+            'form__elements',`form__elements-${block.id}`]"
         />
 
         <!-- Accordion mit Kind-Feldern -->
@@ -112,7 +110,7 @@ const flat = computed(() =>
       ui: def.ui ?? { order: 0, accordion: false }     // Fallback
     }))
     .sort((a, b) => a.ui.order - b.ui.order)            // stable order
-);                                      /* :contentReference[oaicite:0]{index=0} */
+);
 
 /* 2️⃣  in Blöcke umwandeln (Accordion vs. Einzel-Komponente) */
 const layoutBlocks = computed(() => {

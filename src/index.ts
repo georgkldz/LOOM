@@ -22,8 +22,10 @@ import LatexInputField from "./components/LatexInputField/LatexInputField.vue";
 import TextView from "./components/TextView/TextView.vue";
 import CollaborativeForm from "./components/CollaborativeForm/CollaborativeForm.vue";
 import SimpleForm from "./components/SimpleForm/SimpleForm.vue";
+import LatexView from "@/components/LatexView/LatexView.vue";
+import SampleSolutionView from "@/components/SampleSolutionView/SampleSolutionView.vue";
 
-export const CARPETComponents = { DOTGraph, InputField, GenericButton, GenericForm, CodeEditor, LatexInputField, TextView, CollaborativeForm, SimpleForm };
+export const CARPETComponents = { DOTGraph, InputField, GenericButton, GenericForm, CodeEditor, LatexInputField, TextView, CollaborativeForm, SimpleForm, LatexView, SampleSolutionView };
 
 import type { SerializedDOTGraphComponent } from "./components/DOTGraph/DOTGraph";
 import type { SerializedInputFieldComponent } from "./components/InputField/InputField";
@@ -34,7 +36,8 @@ import type {SerializedLatexInputFieldComponent} from "./components/LatexInputFi
 import type {SerializedTextViewComponent} from "./components/TextView/TextView";
 import type {SerializedCollabFormComponent} from "./components/CollaborativeForm/CollaborativeForm";
 import type {SerializedSimpleFormComponent} from "@/components/SimpleForm/SimpleForm";
-
+import type {SerializedLatexViewComponent} from "@/components/LatexView/LatexView";
+import type {SerializedSampleSolutionComponent} from "@/components/SampleSolutionView/SampleSolutionView";
 
 export type SerializedCARPETComponents =
   | SerializedDOTGraphComponent
@@ -45,7 +48,9 @@ export type SerializedCARPETComponents =
   | SerializedLatexInputFieldComponent
   | SerializedTextViewComponent
   | SerializedCollabFormComponent
-  | SerializedSimpleFormComponent;
+  | SerializedSimpleFormComponent
+  | SerializedSampleSolutionComponent
+  | SerializedLatexViewComponent;
 
 export interface SerialisedComponents {
   [id: number]: SerializedCARPETComponents;
@@ -65,3 +70,5 @@ export * from "./components/LatexInputField/LatexInputField";
 export * from "./components/TextView/TextView";
 export * from "./components/CollaborativeForm/CollaborativeForm.vue"
 export * from "./components/SimpleForm/SimpleForm";
+export * from "./components/SampleSolutionView/SampleSolutionView";
+export * from "./components/LatexView/LatexView.vue";

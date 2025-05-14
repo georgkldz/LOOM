@@ -19,6 +19,7 @@ import type { SerializedInputFieldComponent } from "../InputField/InputField";
 import type { SerializedButtonComponent } from "../GenericButton/GenericButton";
 import type {SerializedLatexInputFieldComponent} from "@/components/LatexInputField/LatexInputField";
 import type {SerializedTextViewComponent} from "@/components/TextView/TextView";
+import type { SerializedLatexViewComponent } from "@/components/LatexView/LatexView";
 
 import { unref } from "vue";
 
