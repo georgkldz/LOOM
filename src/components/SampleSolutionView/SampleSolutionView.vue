@@ -138,6 +138,7 @@ const page = ref<"left" | "right">("left");
 
 /* sofortige Validierung (formal) */
 onMounted(async () => {
+  console.debug("SampleSolutionView, onMounted betreten")
   await nextTick();
   component.validate();
 });
