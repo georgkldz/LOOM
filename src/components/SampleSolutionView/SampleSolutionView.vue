@@ -4,10 +4,11 @@
     <div class="col-12 col-md-6">
       <q-carousel
         v-model="page"
-        navigation
+        arrows
         control-type="flat"
-      height="100%"
-      >
+        control-color="blue"
+        height="100%"
+       animated>
       <!-- ① frühere linke Spalte (formComponents) -->
       <q-carousel-slide name="left">
         <template v-for="block in layoutBlocks" :key="block.name ?? block.id">
@@ -93,11 +94,13 @@ import {
 } from "vue";
 import { SampleSolutionViewComponent } from "./SampleSolutionView";
 import type { SampleSolutionViewProps } from "./SampleSolutionView";
+import { QExpansionItem, QCarousel, QCarouselSlide } from "quasar";
 
 const props = defineProps<SampleSolutionViewProps>();
 const { storeObject, componentID, componentPath } = toRefs(props);
 
 const component = new SampleSolutionViewComponent(storeObject, unref(componentID), unref(componentPath),);
+const dependencies = component.loadDependencies();
 const nestedComponents = component.getNestedComponents();
 
 const flat = computed(() =>
@@ -133,8 +136,25 @@ const layoutBlocks = computed(() => {
   return result;
 });
 
+const validationResult = ref(component.validate());
 /* Carousel‑Seite */
 const page = ref<"left" | "right">("left");
+
+watch(
+  () => dependencies,
+  () => {
+    validationResult.value = component.validate();
+  },
+  { deep: true, immediate: true }
+);
+
+watch(
+  () => nestedComponents,
+  () => {
+    validationResult.value = component.validate();
+  },
+  { deep: true, immediate: true }
+);
 
 /* sofortige Validierung (formal) */
 onMounted(async () => {
@@ -144,8 +164,29 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
-.form__elements {
-  margin-bottom: 0.5rem;
+<style lang="scss" scoped>
+@use "quasar/src/css/variables" as q;
+.form__actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
 }
+
+.form__elements-canvas {
+  min-height: 140px;
+  resize: vertical;
+}
+
+
+$role-colors: (
+  'r0': q.$blue-2,
+  'r1': q.$green-2,
+  'r2': q.$orange-2,
+  'r3': q.$purple-2
+);
+
+@each $role, $color in $role-colors {
+  .form__elements.role-#{$role} { background-color: $color; }
+}
+
 </style>

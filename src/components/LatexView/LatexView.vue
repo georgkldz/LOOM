@@ -15,12 +15,20 @@ const { storeObject, componentID, componentPath } = toRefs(props);
 
 const component = new LatexViewComponent(storeObject, unref(componentID), unref(componentPath));
 const state = component.getComponentState();
+const dependencies = component.loadDependencies();
 
-const latex = computed(() => state.value.fieldValue ?? '');
+const latex = computed(() => {
+  return (
+    dependencies.value.referenceValue ??
+    state.value.fieldValue ??
+    ""
+  );
+});
+
 
 const renderedLatex = computed(() =>
   katex.renderToString(latex.value, {
-    displayMode: true,
+    displayMode: false,
     throwOnError: false,
     errorColor: '#cc0000',
   })

@@ -57,7 +57,6 @@ export type CollabFormDependencies =
  * The structure of the payload that is emitted by the Form-component.
  */
 export interface CollabFormPayload extends ActionPayload {
-  collabFields: Record<string, any>      // Werte der koll. Felder
   external?: Record<string, any>
   formFields: { [key: string]: any };
   extraRightFields: { [key: string]: any };
@@ -241,11 +240,6 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
       {} as { [key: string]: any }
     );
     const uid = this.getDependencies().value.userId
-    const collabFields = Object.fromEntries(
-      Object.entries(this.getNestedComponents().formComponents).map(
-        ([id, comp]) => [id, (comp.state as any).fieldValueByUser?.[uid!] ?? '']
-      )
-    )
 
     const extraRightFields = Object.entries(this.getNestedComponents().extraRightComponents).reduce(
       (extraRightFieldValues, [key, component]) => {
@@ -267,6 +261,6 @@ export class CollaborativeFormComponent extends BaseComponent<CollabSpecificatio
       {} as { [key: string]: any }
     );
 
-    return { formFields, collabFields, extraRightFields, externalValues };
+    return { formFields, extraRightFields, externalValues };
   }
 }
