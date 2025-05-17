@@ -78,6 +78,15 @@
         :componentPath="`${componentPath}.nestedComponents.solutionComponents.${solId}`"
         readonly
       />
+      <div class="form__actions q-mt-md">
+        <component
+          :is="nestedComponents.actionComponents.submit.type"
+          :storeObject="storeObject"
+          componentID="submit"
+          :componentPath="`${componentPath}.nestedComponents.actionComponents.submit`"
+          @buttonClick="component.actionHandler(emit, 'submit')"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -92,10 +101,11 @@ import {
   nextTick,
   onMounted,
 } from "vue";
-import { SampleSolutionViewComponent } from "./SampleSolutionView";
+import { type SampleSolutionEmits, SampleSolutionViewComponent } from "./SampleSolutionView";
 import type { SampleSolutionViewProps } from "./SampleSolutionView";
 import { QExpansionItem, QCarousel, QCarouselSlide } from "quasar";
 
+const emit = defineEmits<SampleSolutionEmits>();
 const props = defineProps<SampleSolutionViewProps>();
 const { storeObject, componentID, componentPath } = toRefs(props);
 

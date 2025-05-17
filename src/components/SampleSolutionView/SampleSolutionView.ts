@@ -8,6 +8,9 @@ import {
   type ComponentTypeSpecification,
   type NestedComponents,
   type ComponentState,
+  type ComponentAction,
+  type PublicComponentEmit,
+  type ComponentEmits, type FetchAction, type ComponentActions
 } from "@/components/BaseComponent/BaseComponent";
 import { unref } from "vue";
 import type { SerializedInputFieldComponent } from "@/components/InputField/InputField";
@@ -15,11 +18,33 @@ import type { SerializedLatexInputFieldComponent } from "@/components/LatexInput
 import type { SerializedTextViewComponent } from "@/components/TextView/TextView";
 import type { SerializedButtonComponent } from "@/components/GenericButton/GenericButton";
 import type { SerializedLatexViewComponent } from "@/components/LatexView/LatexView";
+import type { CollabFormEmits, CollabFormPayload } from "@/components/CollaborativeForm/CollaborativeForm";
+import type { JSONPathExpression } from "@/stores/Store";
 
 export type SampleSolutionViewComponentType = "SampleSolutionView";
 export interface SampleSolutionViewProps extends ComponentProps {}
 
 export interface SampleSolutionDependencies extends ComponentDependencies {}
+
+
+export interface SampleSolutionAction extends FetchAction {
+  externalValues?: {
+    [key: string]: JSONPathExpression;
+  };
+}
+
+/**
+ * The FormComponent allows to emit a fetch-action on submitting the form.
+ */
+export interface SampleSolutionActions extends ComponentActions {
+  submit: SampleSolutionAction;
+}
+
+export type SampleSolutionEmit = [actionType: "submit"] & PublicComponentEmit;
+
+export type SampleSolutionEmits = {
+  action: SampleSolutionEmit;
+} & ComponentEmits;
 
 export interface SampleSolutionState extends ComponentState {
 
@@ -58,12 +83,14 @@ export interface SerializedSampleSolutionComponent
   dependencies: SerialisedDependencies;
   state:        SampleSolutionState;
   nestedComponents: SampleSolutionNestedComponents;
+  actions: SampleSolutionActions;
 }
 
 /* Gesamt‑Spezifikation */
 export interface SampleSolutionSpec extends ComponentTypeSpecification {
   SerializedComponent: SerializedSampleSolutionComponent;
   Dependencies:        SampleSolutionDependencies;
+  Emits: SampleSolutionEmits;
 }
 
 export class SampleSolutionViewComponent extends BaseComponent<SampleSolutionSpec> {
@@ -79,4 +106,9 @@ export class SampleSolutionViewComponent extends BaseComponent<SampleSolutionSpe
     });
     return { isValid: true, isCorrect: true };
   }
+
+  protected constructPayload() {
+    return {};
+  }
+
 }

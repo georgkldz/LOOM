@@ -102,13 +102,17 @@ const syntaxError = computed(() => component.getSyntaxError(value.value));
 
 // Echtzeit-Rendering des LaTeX-Inhalts
 const renderedLatexLabel = computed(() => {
-  if (!value.value || value.value.trim() === "") {
+  const raw = value.value;
+  const latexString = raw == null ? "" : String(raw);
+
+  if (latexString.trim() === "") {
     return "Hier Latex eingeben";
   }
   return syntaxError.value === null
-    ? katex.renderToString(value.value, { throwOnError: true })
+    ? katex.renderToString(latexString, { throwOnError: true })
     : "Ungültiger LaTeX-Code";
 });
+
 
 const handleFocusIn = () => {
   isEditing.value = true;
@@ -142,10 +146,10 @@ watch(
 );
 
 const onUserInput = (newValue: string | number | null) => {
-  // 1) Wert in den Store schreiben
+  const strVal = newValue == null ? "" : String(newValue);
   unref(storeObject).setProperty({
     path: `${component.getComponentPath()}.state.fieldValue`,
-    value: newValue
+    value: strVal
   });
   component.validate(value.value);
 };
