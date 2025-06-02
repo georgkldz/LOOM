@@ -159,6 +159,7 @@ export interface ComponentConfiguration {
    */
   innerComponentLayout?: CustomInnerComponentLayout;
   editAllowedForRole?: number;
+  isCommentable?: boolean;
 }
 
 /**

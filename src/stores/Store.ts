@@ -106,7 +106,6 @@ export interface StoreAPI<State extends StateTree = StateTree> {
    */
   fetchFromAPI?: (urlPath: string) => any;
 
-  extractFieldValues(): void;
 }
 
 /**
@@ -140,41 +139,6 @@ export const ensurePathExists = (path: string) => {
 export const useStore = (store: StateTree): StoreAPI => {
   return {
 
-    async extractFieldValues() {
-      while (!this.getProperty("$.documentReady")) {
-        await nextTick()
-      }
-
-      const myRoleId = this.getProperty("$.roleId") as number;
-
-      const srcBase = "$.nodes.0.components.0.nestedComponents.formComponents";
-      const dstBase = "$.nodes.2.components.0.nestedComponents.formComponents";
-
-      // alle Feld-IDs der Steckbrief-Aufgabe
-      const fields = [
-        "latexInputField1",
-        "latexInputField2",
-        "latexInputField3",
-        "inputField1",
-        "inputField2",
-        "inputField3",
-        "inputField4",
-      ];
-
-      fields.forEach((fid) => {
-        const srcPath = `${srcBase}.${fid}.state.fieldValue` as JSONPathExpression;
-        const val = this.getProperty(srcPath);
-
-        if (val === undefined) return;
-
-        const compId = `r${myRoleId}_${fid}`;
-        this.setProperty({
-          path: `${dstBase}.${compId}.state.fieldValue`,
-          value: val,
-        });
-
-      });
-    },
     /**
      * The store object.
      */

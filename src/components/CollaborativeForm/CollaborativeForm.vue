@@ -168,7 +168,6 @@ watch(
 
 onMounted(async () => {
   await nextTick();
-  unref(storeObject).extractFieldValues();
 });
 
 </script>
