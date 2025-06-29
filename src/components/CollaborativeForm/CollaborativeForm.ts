@@ -22,6 +22,7 @@ import type {SerializedTextViewComponent} from "@/components/TextView/TextView";
 import type { SerializedLatexViewComponent } from "@/components/LatexView/LatexView";
 
 import { unref } from "vue";
+import type { SerializedPictureViewComponent } from "@/components/PictureView/PictureView";
 
 /**
  * The FormProps interface is used to define the properties of the Form component.
@@ -106,12 +107,14 @@ export interface CollabNestedComponents extends NestedComponents {
     [key: string]:
       | SerializedInputFieldComponent
       | SerializedLatexInputFieldComponent
+      | SerializedPictureViewComponent
       | SerializedTextViewComponent;
   };
   extraRightComponents: {
     [key: string]:
       | SerializedInputFieldComponent
       | SerializedLatexInputFieldComponent
+      | SerializedPictureViewComponent
       | SerializedTextViewComponent;
   };
   actionComponents: {

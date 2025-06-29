@@ -20,6 +20,7 @@ import type { SerializedButtonComponent } from "@/components/GenericButton/Gener
 import type { SerializedLatexViewComponent } from "@/components/LatexView/LatexView";
 import type { CollabFormEmits, CollabFormPayload } from "@/components/CollaborativeForm/CollaborativeForm";
 import type { JSONPathExpression } from "@/stores/Store";
+import type { SerializedPictureViewComponent } from "@/components/PictureView/PictureView";
 
 export type SampleSolutionViewComponentType = "SampleSolutionView";
 export interface SampleSolutionViewProps extends ComponentProps {}
@@ -55,6 +56,7 @@ export interface SampleSolutionNestedComponents extends NestedComponents {
     [key: string]:
       | SerializedInputFieldComponent
       | SerializedLatexInputFieldComponent
+      | SerializedPictureViewComponent
       | SerializedTextViewComponent
       | SerializedLatexViewComponent;
 
@@ -63,12 +65,14 @@ export interface SampleSolutionNestedComponents extends NestedComponents {
     [key: string]:
       | SerializedInputFieldComponent
       | SerializedLatexInputFieldComponent
+      | SerializedPictureViewComponent
       | SerializedTextViewComponent
       | SerializedLatexViewComponent;
   };
   solutionComponents:{
     [key: string]:
       | SerializedLatexViewComponent
+    | SerializedPictureViewComponent
   };
 
   actionComponents: {
