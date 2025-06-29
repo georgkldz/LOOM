@@ -11,7 +11,7 @@ describe('CollaborativeFormComponent – Minimal Smoke', () => {
     /* 2  Notwendige Properties & Methoden stubben */
     cmp.serialisedBaseComponentPath = '$.components.form1'
     cmp.storeObject = ref({
-      setProperty: vi.fn(),        // wird in validate() aufgerufen
+      setProperty: vi.fn(),
       getProperty: vi.fn()
     })
 
@@ -31,8 +31,50 @@ describe('CollaborativeFormComponent – Minimal Smoke', () => {
     cmp.checkLocks = () => true
 
     /* 3  validate() aufrufen und Ergebnis prüfen */
-    const res = cmp.validate()                       // darf nicht werfen
+    const res = cmp.validate()
     expect(res).toHaveProperty('isValid')
     expect(res).toHaveProperty('isCorrect')
+
+    // Neue Assertion: Prüft die zusätzlichen Validierungseigenschaften
+    expect(res).toHaveProperty('dependenciesAreValidAndFormFieldsAreCorrect')
+    expect(res).toHaveProperty('formFieldsAreValidAndDependenciesAreCorrect')
+  })
+
+  // Neuer Test für die Payload-Konstruktion
+  it('konstruiert einen Payload', () => {
+    const cmp: any = Object.create(CollaborativeFormComponent.prototype)
+
+    // Notwendige Properties & Methoden stubben
+    cmp.storeObject = ref({
+      getProperty: vi.fn(() => null)
+    })
+
+    cmp.getNestedComponents = () => ({
+      formComponents: {
+        field1: { state: { fieldValue: 'Test' } }
+      },
+      extraRightComponents: {
+        field2: { state: { fieldValue: 123 } }
+      }
+    })
+
+    cmp.getDependencies = () => ({ value: {} })
+
+    // Kritische Eigenschaft hinzufügen 👇
+    cmp.serializedBaseComponent = {
+      actions: {
+        submit: {
+          externalValues: {}
+        }
+      }
+    }
+
+    // Methode aufrufen und Ergebnis prüfen
+    const payload = cmp.constructPayload()
+    expect(payload).toEqual({
+      formFields: { field1: 'Test' },
+      extraRightFields: { field2: 123 },
+      externalValues: {}
+    })
   })
 })
