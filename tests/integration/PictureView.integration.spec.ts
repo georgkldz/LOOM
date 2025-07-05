@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils';
 import { reactive, ref, nextTick } from 'vue';
 import PictureView from "../../src/components/PictureView/PictureView.vue";
 
-/* -- voll reaktiver Store-Mock (reactive()!) -- */
+
 function makeStore(seed: any) {
   const data = reactive(seed);
   return {
@@ -31,9 +31,10 @@ describe('PictureView – Integration Store ↔ Komponente', () => {
     const w = mount(PictureView, {
       props: { storeObject: ref(store), componentID: 5, componentPath: 'comp' }
     });
+
     expect(w.get('img').attributes('src')).toBe('/images/initial.webp');
 
-    /* ---- Bildpfad im Store ändern ---- */
+
     store.setProperty({ path: 'imgRef', value: '/images/live.webp' });
     await nextTick();
 

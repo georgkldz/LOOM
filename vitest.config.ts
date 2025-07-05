@@ -17,7 +17,7 @@ export default mergeConfig(
     test: {
       environment: 'jsdom',                       // bleibt wie gehabt :contentReference[oaicite:4]{index=4}
       globals: true,
-      exclude: [...configDefaults.exclude, 'e2e/**'],
+      exclude: [...configDefaults.exclude, 'e2e/**',],
       root: fileURLToPath(new URL('./', import.meta.url)),
       setupFiles: ['./tests/setup-vitest.ts'],
       coverage: {                                 // v8-Provider ist default und am schnellsten :contentReference[oaicite:5]{index=5}

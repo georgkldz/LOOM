@@ -340,7 +340,8 @@ export abstract class BaseComponent<
    * @returns <Ref<T["SerializedComponent"]["state"]>>
    */
   public getComponentState(): Ref<T["SerializedComponent"]["state"]> {
-    return <Ref<T["SerializedComponent"]["state"]>>ref(unref(this.serializedBaseComponent).state);
+    return computed(() => unref(this.serializedBaseComponent).state);
+
   }
 
   /**
@@ -348,9 +349,8 @@ export abstract class BaseComponent<
    * @returns <Ref<T["SerializedComponent"]["componentConfiguration"]>
    */
   public getComponentConfiguration(): Ref<T["SerializedComponent"]["componentConfiguration"]> {
-    return <Ref<T["SerializedComponent"]["componentConfiguration"]>>(
-      ref(unref(this.serializedBaseComponent).componentConfiguration)
-    );
+    return computed(() => unref(this.serializedBaseComponent).componentConfiguration);
+
   }
 
   /**
